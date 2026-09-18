@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>The Map of Central Park</title>
 
 <style>
+
 * {
   box-sizing: border-box;
 }
@@ -32,9 +34,22 @@ body {
   color: #382817;
 
   background:
-    radial-gradient(circle at 20% 20%, rgba(80,50,20,.12), transparent 25%),
-    radial-gradient(circle at 80% 70%, rgba(80,50,20,.10), transparent 30%),
-    linear-gradient(135deg, #e4c98e, #f5e4b5, #d5b875);
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(80,50,20,.12),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(80,50,20,.10),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #e4c98e,
+      #f5e4b5,
+      #d5b875
+    );
 
   border: 3px solid #8b6b3f;
   border-radius: 14px;
@@ -43,6 +58,8 @@ body {
     inset 0 0 80px rgba(70,40,10,.25),
     0 15px 40px rgba(0,0,0,.5);
 }
+
+/* TITLE */
 
 .title {
   font-size: clamp(30px, 7vw, 48px);
@@ -82,7 +99,7 @@ body {
   background: rgba(255,245,210,.28);
 }
 
-/* stylised park paths */
+/* PARK PATHS */
 
 .path {
   position: absolute;
@@ -119,7 +136,7 @@ body {
   transform: rotate(110deg);
 }
 
-/* lake */
+/* LAKE */
 
 .lake {
   position: absolute;
@@ -130,11 +147,12 @@ body {
 
   border: 2px solid rgba(60,80,85,.35);
   background: rgba(100,140,150,.14);
+
   border-radius: 55%;
   transform: rotate(8deg);
 }
 
-/* labels */
+/* LABELS */
 
 .label {
   position: absolute;
@@ -160,7 +178,7 @@ body {
   bottom: 5%;
 }
 
-/* AL footprints */
+/* FOOTPRINTS */
 
 .foot {
   position: absolute;
@@ -174,7 +192,7 @@ body {
   opacity: .8;
 }
 
-/* walking line */
+/* WALKING ROUTE */
 
 .route {
   position: absolute;
@@ -182,14 +200,18 @@ body {
   top: 62%;
   width: 0;
   height: 3px;
+
   background: rgba(100,55,25,.5);
+
   transform: rotate(-14deg);
   transform-origin: left center;
+
   border-radius: 5px;
+
   transition: width 1s ease;
 }
 
-/* AL text */
+/* WALKER MESSAGE */
 
 .walker {
   min-height: 25px;
@@ -202,7 +224,458 @@ body {
 button {
   min-height: 56px;
   padding: 0 25px;
+
   border: 2px solid #72552f;
   border-radius: 999px;
 
-  background
+  background: #46331e;
+  color: #f7e7bc;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 0 #2b1e11;
+
+  transition: transform .12s;
+}
+
+button:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #2b1e11;
+}
+
+button:disabled {
+  opacity: .7;
+}
+
+/* ROCKET */
+
+.rocket {
+  position: absolute;
+
+  left: 50%;
+  bottom: -20px;
+
+  transform: translateX(-50%);
+
+  font-size: 70px;
+
+  opacity: 0;
+
+  z-index: 10;
+}
+
+.launch {
+  animation:
+    launch 3s cubic-bezier(.15,.75,.2,1)
+    forwards;
+}
+
+@keyframes launch {
+
+  0% {
+    opacity: 0;
+    transform:
+      translate(-50%, 50px)
+      rotate(0deg);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translate(-50%, -600px)
+      rotate(10deg);
+  }
+
+}
+
+/* SHAKE */
+
+.shake {
+  animation: shake .1s linear 10;
+}
+
+@keyframes shake {
+
+  0%,100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(7px);
+  }
+
+}
+
+/* STARS */
+
+.star {
+  position: absolute;
+
+  color: #5c4629;
+
+  opacity: .25;
+
+  font-size: 12px;
+}
+
+/* MOBILE */
+
+@media(max-width:500px) {
+
+  body {
+    padding: 10px;
+  }
+
+  .parchment {
+    min-height: 620px;
+    padding: 22px 12px;
+  }
+
+  .map {
+    height: 310px;
+  }
+
+  button {
+    font-size: 16px;
+    width: 90%;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="parchment" id="page">
+
+  <div class="stamp">
+    CENTRAL PARK • CLASSIFIED
+  </div>
+
+  <h1 class="title">
+    The Map of Central Park
+  </h1>
+
+  <div class="subtitle">
+    A rather peculiar map has been discovered...
+  </div>
+
+  <div class="map" id="map">
+
+    <div class="lake"></div>
+
+    <div class="path p1"></div>
+    <div class="path p2"></div>
+    <div class="path p3"></div>
+    <div class="path p4"></div>
+
+    <div class="label upper">
+      UPPER PARK
+    </div>
+
+    <div class="label south">
+      SOUTH END
+    </div>
+
+    <div class="label central">
+      CENTRAL PARK
+    </div>
+
+    <div class="route" id="route"></div>
+
+    <!-- AL'S FOOTPRINTS -->
+
+    <div
+      class="foot"
+      id="f1"
+      style="left:12%;top:57%;">
+      👣
+    </div>
+
+    <div
+      class="foot"
+      id="f2"
+      style="left:27%;top:52%;">
+      👣
+    </div>
+
+    <div
+      class="foot"
+      id="f3"
+      style="left:41%;top:44%;">
+      👣
+    </div>
+
+    <div
+      class="foot"
+      id="f4"
+      style="left:55%;top:37%;">
+      👣
+    </div>
+
+    <div
+      class="foot"
+      id="f5"
+      style="left:69%;top:30%;">
+      👣
+    </div>
+
+    <!-- LITTLE MAP SYMBOLS -->
+
+    <div
+      class="star"
+      style="left:15%;top:25%;">
+      ✦
+    </div>
+
+    <div
+      class="star"
+      style="right:18%;top:20%;">
+      ✧
+    </div>
+
+    <div
+      class="star"
+      style="right:28%;bottom:25%;">
+      ✦
+    </div>
+
+  </div>
+
+  <div class="walker" id="walker">
+    👤 AL is somewhere on the map...
+  </div>
+
+  <!-- ROCKET -->
+
+  <div
+    class="rocket"
+    id="rocket">
+    🚀
+  </div>
+
+  <!-- BUTTON -->
+
+  <div style="margin-top:25px;">
+
+    <button
+      id="magicButton"
+      type="button">
+
+      ⚠️ DON'T PRESS THIS BUTTON
+
+    </button>
+
+  </div>
+
+  <p
+    id="message"
+    style="font-size:14px;opacity:.7;margin-top:18px;">
+
+    I solemnly advise you to ignore this.
+
+  </p>
+
+</div>
+
+<script>
+
+const button =
+  document.getElementById("magicButton");
+
+const message =
+  document.getElementById("message");
+
+const walker =
+  document.getElementById("walker");
+
+const route =
+  document.getElementById("route");
+
+const rocket =
+  document.getElementById("rocket");
+
+const page =
+  document.getElementById("page");
+
+const footprints = [
+
+  document.getElementById("f1"),
+  document.getElementById("f2"),
+  document.getElementById("f3"),
+  document.getElementById("f4"),
+  document.getElementById("f5")
+
+];
+
+let step = 0;
+
+
+button.addEventListener(
+  "click",
+  function() {
+
+    step++;
+
+
+    /* FIRST CLICK */
+
+    if (step === 1) {
+
+      button.textContent =
+        "ARE YOU SURE?";
+
+      walker.textContent =
+        "👣 AL has stopped walking.";
+
+      message.textContent =
+        "The map appears to be reacting...";
+
+      route.style.width =
+        "35%";
+
+      footprints[0]
+        .classList.add("show");
+
+      footprints[1]
+        .classList.add("show");
+
+    }
+
+
+    /* SECOND CLICK */
+
+    else if (step === 2) {
+
+      button.textContent =
+        "BRUH…";
+
+      walker.textContent =
+        "👣 AL is heading somewhere he absolutely should not.";
+
+      message.textContent =
+        "I literally told you not to press it. 😐";
+
+      route.style.width =
+        "65%";
+
+      footprints.forEach(
+        function(foot) {
+
+          foot.classList.add("show");
+
+        }
+      );
+
+    }
+
+
+    /* THIRD CLICK */
+
+    else {
+
+      button.disabled = true;
+
+      button.textContent =
+        "🚀 LAUNCHING…";
+
+      walker.textContent =
+        "🚨 MAGICAL ANOMALY DETECTED";
+
+      message.textContent =
+        "3… 2… 1…";
+
+      page.classList.add("shake");
+
+
+      /* ENGINE */
+
+      setTimeout(
+        function() {
+
+          message.textContent =
+            "ENGINE IGNITION 🔥";
+
+        },
+        700
+      );
+
+
+      /* LIFTOFF */
+
+      setTimeout(
+        function() {
+
+          message.textContent =
+            "LIFTOFF! 🚀";
+
+          rocket.classList.add(
+            "launch"
+          );
+
+        },
+        1400
+      );
+
+
+      /* RESET */
+
+      setTimeout(
+        function() {
+
+          walker.textContent =
+            "BRUH. YOU JUST LAUNCHED AL INTO ORBIT.";
+
+          message.textContent =
+            "Central Park has officially filed a complaint. 😂";
+
+          button.disabled = false;
+
+          button.textContent =
+            "🚀 RESET MAP";
+
+          rocket.classList.remove(
+            "launch"
+          );
+
+          page.classList.remove(
+            "shake"
+          );
+
+          route.style.width =
+            "0";
+
+          footprints.forEach(
+            function(foot) {
+
+              foot.classList.remove(
+                "show"
+              );
+
+            }
+          );
+
+          step = 0;
+
+        },
+        4800
+      );
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>
