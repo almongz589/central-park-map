@@ -2,354 +2,194 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Map of Central Park</title>
 
 <style>
+*{box-sizing:border-box}
 
-* {
-  box-sizing: border-box;
+body{
+margin:0;
+min-height:100vh;
+background:#171717;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:10px;
+font-family:Georgia,"Times New Roman",serif
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: #171717;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  font-family: Georgia, "Times New Roman", serif;
+.parchment{
+width:100%;
+max-width:700px;
+min-height:650px;
+position:relative;
+overflow:hidden;
+padding:28px 15px;
+text-align:center;
+color:#382817;
+background:
+radial-gradient(circle at 20% 20%,rgba(80,50,20,.12),transparent 25%),
+radial-gradient(circle at 80% 70%,rgba(80,50,20,.1),transparent 30%),
+linear-gradient(135deg,#e4c98e,#f5e4b5,#d5b875);
+border:3px solid #8b6b3f;
+border-radius:14px;
+box-shadow:inset 0 0 80px rgba(70,40,10,.25),0 15px 40px rgba(0,0,0,.5)
 }
 
-.parchment {
-  width: 100%;
-  max-width: 700px;
-  min-height: 650px;
-  position: relative;
-  overflow: hidden;
-  padding: 30px 20px;
-  text-align: center;
-  color: #382817;
-
-  background:
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(80,50,20,.12),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 80% 70%,
-      rgba(80,50,20,.10),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #e4c98e,
-      #f5e4b5,
-      #d5b875
-    );
-
-  border: 3px solid #8b6b3f;
-  border-radius: 14px;
-
-  box-shadow:
-    inset 0 0 80px rgba(70,40,10,.25),
-    0 15px 40px rgba(0,0,0,.5);
+.title{
+font-size:clamp(30px,7vw,48px);
+font-style:italic;
+margin:15px 0 5px
 }
 
-/* TITLE */
-
-.title {
-  font-size: clamp(30px, 7vw, 48px);
-  font-style: italic;
-  margin: 15px 0 5px;
+.subtitle{
+font-size:15px;
+opacity:.7;
+margin-bottom:20px
 }
 
-.subtitle {
-  font-size: 15px;
-  opacity: .7;
-  margin-bottom: 20px;
+.stamp{
+display:inline-block;
+border:2px solid rgba(60,40,20,.55);
+padding:7px 12px;
+font-size:11px;
+letter-spacing:2px;
+transform:rotate(-3deg);
+opacity:.7
 }
 
-.stamp {
-  display: inline-block;
-  border: 2px solid rgba(60,40,20,.55);
-  padding: 7px 12px;
-  font-size: 11px;
-  letter-spacing: 2px;
-  transform: rotate(-3deg);
-  opacity: .7;
+.map{
+width:92%;
+max-width:590px;
+height:350px;
+margin:20px auto 10px;
+position:relative;
+overflow:hidden;
+border:2px dashed rgba(70,50,25,.45);
+border-radius:45% 48% 42% 50%;
+background:rgba(255,245,210,.28)
 }
 
-/* MAP */
-
-.map {
-  width: 92%;
-  max-width: 590px;
-  height: 350px;
-  margin: 20px auto 10px;
-  position: relative;
-  overflow: hidden;
-
-  border: 2px dashed rgba(70,50,25,.45);
-  border-radius: 45% 48% 42% 50%;
-
-  background: rgba(255,245,210,.28);
+.path{
+position:absolute;
+height:2px;
+background:rgba(70,50,25,.25);
+transform-origin:left center
 }
 
-/* PARK PATHS */
+.p1{left:8%;top:55%;width:85%;transform:rotate(-8deg)}
+.p2{left:25%;top:15%;width:65%;transform:rotate(48deg)}
+.p3{left:15%;top:75%;width:75%;transform:rotate(13deg)}
+.p4{left:50%;top:5%;width:65%;transform:rotate(110deg)}
 
-.path {
-  position: absolute;
-  height: 2px;
-  background: rgba(70,50,25,.25);
-  transform-origin: left center;
+.lake{
+position:absolute;
+left:42%;
+top:10%;
+width:18%;
+height:70%;
+border:2px solid rgba(60,80,85,.35);
+background:rgba(100,140,150,.14);
+border-radius:55%;
+transform:rotate(8deg)
 }
 
-.p1 {
-  left: 8%;
-  top: 55%;
-  width: 85%;
-  transform: rotate(-8deg);
+.label{
+position:absolute;
+font-size:13px;
+opacity:.5;
+font-style:italic
 }
 
-.p2 {
-  left: 25%;
-  top: 15%;
-  width: 65%;
-  transform: rotate(48deg);
+.upper{left:7%;top:10%;transform:rotate(-8deg)}
+.south{right:6%;bottom:10%;transform:rotate(-6deg)}
+.central{left:37%;bottom:5%}
+
+.foot{
+position:absolute;
+font-size:23px;
+opacity:0;
+transition:opacity .5s;
+filter:sepia(1)
 }
 
-.p3 {
-  left: 15%;
-  top: 75%;
-  width: 75%;
-  transform: rotate(13deg);
+.foot.show{opacity:.8}
+
+.route{
+position:absolute;
+left:12%;
+top:62%;
+width:0;
+height:3px;
+background:rgba(100,55,25,.5);
+transform:rotate(-14deg);
+transform-origin:left center;
+border-radius:5px;
+transition:width 1s ease
 }
 
-.p4 {
-  left: 50%;
-  top: 5%;
-  width: 65%;
-  transform: rotate(110deg);
+.walker{
+min-height:25px;
+font-weight:bold;
+font-size:15px
 }
 
-/* LAKE */
-
-.lake {
-  position: absolute;
-  left: 42%;
-  top: 10%;
-  width: 18%;
-  height: 70%;
-
-  border: 2px solid rgba(60,80,85,.35);
-  background: rgba(100,140,150,.14);
-
-  border-radius: 55%;
-  transform: rotate(8deg);
+button{
+min-height:56px;
+width:90%;
+padding:0 20px;
+border:2px solid #72552f;
+border-radius:999px;
+background:#46331e;
+color:#f7e7bc;
+font-family:Georgia,"Times New Roman",serif;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 5px 0 #2b1e11
 }
 
-/* LABELS */
-
-.label {
-  position: absolute;
-  font-size: 13px;
-  opacity: .5;
-  font-style: italic;
+button:active{
+transform:translateY(4px);
+box-shadow:0 1px 0 #2b1e11
 }
 
-.upper {
-  left: 7%;
-  top: 10%;
-  transform: rotate(-8deg);
+button:disabled{opacity:.7}
+
+.rocket{
+position:absolute;
+left:50%;
+bottom:-20px;
+transform:translateX(-50%);
+font-size:70px;
+opacity:0;
+z-index:10
 }
 
-.south {
-  right: 6%;
-  bottom: 10%;
-  transform: rotate(-6deg);
+.launch{
+animation:launch 3s cubic-bezier(.15,.75,.2,1) forwards
 }
 
-.central {
-  left: 37%;
-  bottom: 5%;
+@keyframes launch{
+0%{opacity:0;transform:translate(-50%,50px) rotate(0)}
+12%{opacity:1}
+100%{opacity:1;transform:translate(-50%,-600px) rotate(10deg)}
 }
 
-/* FOOTPRINTS */
+.shake{animation:shake .1s linear 10}
 
-.foot {
-  position: absolute;
-  font-size: 23px;
-  opacity: 0;
-  transition: opacity .5s;
-  filter: sepia(1);
+@keyframes shake{
+0%,100%{transform:translateX(0)}
+50%{transform:translateX(7px)}
 }
 
-.foot.show {
-  opacity: .8;
+.star{
+position:absolute;
+color:#5c4629;
+opacity:.25;
+font-size:12px
 }
-
-/* WALKING ROUTE */
-
-.route {
-  position: absolute;
-  left: 12%;
-  top: 62%;
-  width: 0;
-  height: 3px;
-
-  background: rgba(100,55,25,.5);
-
-  transform: rotate(-14deg);
-  transform-origin: left center;
-
-  border-radius: 5px;
-
-  transition: width 1s ease;
-}
-
-/* WALKER MESSAGE */
-
-.walker {
-  min-height: 25px;
-  font-weight: bold;
-  font-size: 15px;
-}
-
-/* BUTTON */
-
-button {
-  min-height: 56px;
-  padding: 0 25px;
-
-  border: 2px solid #72552f;
-  border-radius: 999px;
-
-  background: #46331e;
-  color: #f7e7bc;
-
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 17px;
-  font-weight: bold;
-
-  cursor: pointer;
-
-  box-shadow: 0 5px 0 #2b1e11;
-
-  transition: transform .12s;
-}
-
-button:active {
-  transform: translateY(4px);
-  box-shadow: 0 1px 0 #2b1e11;
-}
-
-button:disabled {
-  opacity: .7;
-}
-
-/* ROCKET */
-
-.rocket {
-  position: absolute;
-
-  left: 50%;
-  bottom: -20px;
-
-  transform: translateX(-50%);
-
-  font-size: 70px;
-
-  opacity: 0;
-
-  z-index: 10;
-}
-
-.launch {
-  animation:
-    launch 3s cubic-bezier(.15,.75,.2,1)
-    forwards;
-}
-
-@keyframes launch {
-
-  0% {
-    opacity: 0;
-    transform:
-      translate(-50%, 50px)
-      rotate(0deg);
-  }
-
-  12% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 1;
-    transform:
-      translate(-50%, -600px)
-      rotate(10deg);
-  }
-
-}
-
-/* SHAKE */
-
-.shake {
-  animation: shake .1s linear 10;
-}
-
-@keyframes shake {
-
-  0%,100% {
-    transform: translateX(0);
-  }
-
-  50% {
-    transform: translateX(7px);
-  }
-
-}
-
-/* STARS */
-
-.star {
-  position: absolute;
-
-  color: #5c4629;
-
-  opacity: .25;
-
-  font-size: 12px;
-}
-
-/* MOBILE */
-
-@media(max-width:500px) {
-
-  body {
-    padding: 10px;
-  }
-
-  .parchment {
-    min-height: 620px;
-    padding: 22px 12px;
-  }
-
-  .map {
-    height: 310px;
-  }
-
-  button {
-    font-size: 16px;
-    width: 90%;
-  }
-
-}
-
 </style>
 </head>
 
@@ -357,324 +197,171 @@ button:disabled {
 
 <div class="parchment" id="page">
 
-  <div class="stamp">
-    CENTRAL PARK • CLASSIFIED
-  </div>
+<div class="stamp">CENTRAL PARK • CLASSIFIED</div>
 
-  <h1 class="title">
-    The Map of Central Park
-  </h1>
+<h1 class="title">The Map of Central Park</h1>
 
-  <div class="subtitle">
-    A rather peculiar map has been discovered...
-  </div>
+<div class="subtitle">
+A rather peculiar map has been discovered...
+</div>
 
-  <div class="map" id="map">
+<div class="map">
 
-    <div class="lake"></div>
+<div class="lake"></div>
 
-    <div class="path p1"></div>
-    <div class="path p2"></div>
-    <div class="path p3"></div>
-    <div class="path p4"></div>
+<div class="path p1"></div>
+<div class="path p2"></div>
+<div class="path p3"></div>
+<div class="path p4"></div>
 
-    <div class="label upper">
-      UPPER PARK
-    </div>
+<div class="label upper">UPPER PARK</div>
+<div class="label south">SOUTH END</div>
+<div class="label central">CENTRAL PARK</div>
 
-    <div class="label south">
-      SOUTH END
-    </div>
+<div class="route" id="route"></div>
 
-    <div class="label central">
-      CENTRAL PARK
-    </div>
+<div class="foot" id="f1" style="left:12%;top:57%">👣</div>
+<div class="foot" id="f2" style="left:27%;top:52%">👣</div>
+<div class="foot" id="f3" style="left:41%;top:44%">👣</div>
+<div class="foot" id="f4" style="left:55%;top:37%">👣</div>
+<div class="foot" id="f5" style="left:69%;top:30%">👣</div>
 
-    <div class="route" id="route"></div>
+<div class="star" style="left:15%;top:25%">✦</div>
+<div class="star" style="right:18%;top:20%">✧</div>
+<div class="star" style="right:28%;bottom:25%">✦</div>
 
-    <!-- AL'S FOOTPRINTS -->
+</div>
 
-    <div
-      class="foot"
-      id="f1"
-      style="left:12%;top:57%;">
-      👣
-    </div>
+<div class="walker" id="walker">
+👤 AL is somewhere on the map...
+</div>
 
-    <div
-      class="foot"
-      id="f2"
-      style="left:27%;top:52%;">
-      👣
-    </div>
+<div class="rocket" id="rocket">🚀</div>
 
-    <div
-      class="foot"
-      id="f3"
-      style="left:41%;top:44%;">
-      👣
-    </div>
+<div style="margin-top:25px">
+<button id="magicButton">
+⚠️ DON'T PRESS THIS BUTTON
+</button>
+</div>
 
-    <div
-      class="foot"
-      id="f4"
-      style="left:55%;top:37%;">
-      👣
-    </div>
-
-    <div
-      class="foot"
-      id="f5"
-      style="left:69%;top:30%;">
-      👣
-    </div>
-
-    <!-- LITTLE MAP SYMBOLS -->
-
-    <div
-      class="star"
-      style="left:15%;top:25%;">
-      ✦
-    </div>
-
-    <div
-      class="star"
-      style="right:18%;top:20%;">
-      ✧
-    </div>
-
-    <div
-      class="star"
-      style="right:28%;bottom:25%;">
-      ✦
-    </div>
-
-  </div>
-
-  <div class="walker" id="walker">
-    👤 AL is somewhere on the map...
-  </div>
-
-  <!-- ROCKET -->
-
-  <div
-    class="rocket"
-    id="rocket">
-    🚀
-  </div>
-
-  <!-- BUTTON -->
-
-  <div style="margin-top:25px;">
-
-    <button
-      id="magicButton"
-      type="button">
-
-      ⚠️ DON'T PRESS THIS BUTTON
-
-    </button>
-
-  </div>
-
-  <p
-    id="message"
-    style="font-size:14px;opacity:.7;margin-top:18px;">
-
-    I solemnly advise you to ignore this.
-
-  </p>
+<p id="message" style="font-size:14px;opacity:.7;margin-top:18px">
+I solemnly advise you to ignore this.
+</p>
 
 </div>
 
 <script>
 
-const button =
-  document.getElementById("magicButton");
+const button=document.getElementById("magicButton");
+const message=document.getElementById("message");
+const walker=document.getElementById("walker");
+const route=document.getElementById("route");
+const rocket=document.getElementById("rocket");
+const page=document.getElementById("page");
 
-const message =
-  document.getElementById("message");
-
-const walker =
-  document.getElementById("walker");
-
-const route =
-  document.getElementById("route");
-
-const rocket =
-  document.getElementById("rocket");
-
-const page =
-  document.getElementById("page");
-
-const footprints = [
-
-  document.getElementById("f1"),
-  document.getElementById("f2"),
-  document.getElementById("f3"),
-  document.getElementById("f4"),
-  document.getElementById("f5")
-
+const footprints=[
+document.getElementById("f1"),
+document.getElementById("f2"),
+document.getElementById("f3"),
+document.getElementById("f4"),
+document.getElementById("f5")
 ];
 
-let step = 0;
+let step=0;
 
+button.addEventListener("click",function(){
 
-button.addEventListener(
-  "click",
-  function() {
+step++;
 
-    step++;
+if(step===1){
 
+button.textContent="ARE YOU SURE?";
 
-    /* FIRST CLICK */
+walker.textContent="👣 AL has stopped walking.";
 
-    if (step === 1) {
+message.textContent="The map appears to be reacting...";
 
-      button.textContent =
-        "ARE YOU SURE?";
+route.style.width="35%";
 
-      walker.textContent =
-        "👣 AL has stopped walking.";
+footprints[0].classList.add("show");
+footprints[1].classList.add("show");
 
-      message.textContent =
-        "The map appears to be reacting...";
+}
 
-      route.style.width =
-        "35%";
+else if(step===2){
 
-      footprints[0]
-        .classList.add("show");
+button.textContent="BRUH…";
 
-      footprints[1]
-        .classList.add("show");
+walker.textContent=
+"👣 AL is heading somewhere AL was never supposed to be.";
 
-    }
+message.textContent=
+"I literally told you not to press it. 😐";
 
+route.style.width="65%";
 
-    /* SECOND CLICK */
+footprints.forEach(function(foot){
+foot.classList.add("show");
+});
 
-    else if (step === 2) {
+}
 
-      button.textContent =
-        "BRUH…";
-      
-      walker.textContent =
-  "👣 AL is heading somewhere AL was never supposed to be.";
-      
+else{
 
-      message.textContent =
-        "I literally told you not to press it. 😐";
+button.disabled=true;
 
-      route.style.width =
-        "65%";
+button.textContent="🚀 LAUNCHING…";
 
-      footprints.forEach(
-        function(foot) {
+walker.textContent=
+"🚨 MAGICAL ANOMALY DETECTED";
 
-          foot.classList.add("show");
+message.textContent="3… 2… 1…";
 
-        }
-      );
+page.classList.add("shake");
 
-    }
+setTimeout(function(){
 
+message.textContent="ENGINE IGNITION 🔥";
 
-    /* THIRD CLICK */
+},700);
 
-    else {
+setTimeout(function(){
 
-      button.disabled = true;
+message.textContent="LIFTOFF! 🚀";
 
-      button.textContent =
-        "🚀 LAUNCHING…";
+rocket.classList.add("launch");
 
-      walker.textContent =
-        "🚨 MAGICAL ANOMALY DETECTED";
+},1400);
 
-      message.textContent =
-        "3… 2… 1…";
+setTimeout(function(){
 
-      page.classList.add("shake");
+walker.textContent=
+"BRUH. YOU JUST LAUNCHED AL INTO ORBIT.";
 
+message.textContent=
+"Central Park has officially filed a complaint. 😂";
 
-      /* ENGINE */
+button.disabled=false;
 
-      setTimeout(
-        function() {
+button.textContent="🚀 RESET MAP";
 
-          message.textContent =
-            "ENGINE IGNITION 🔥";
+rocket.classList.remove("launch");
 
-        },
-        700
-      );
+page.classList.remove("shake");
 
+route.style.width="0";
 
-      /* LIFTOFF */
+footprints.forEach(function(foot){
+foot.classList.remove("show");
+});
 
-      setTimeout(
-        function() {
+step=0;
 
-          message.textContent =
-            "LIFTOFF! 🚀";
+},4800);
 
-          rocket.classList.add(
-            "launch"
-          );
+}
 
-        },
-        1400
-      );
-
-
-      /* RESET */
-
-      setTimeout(
-        function() {
-
-          walker.textContent =
-            "BRUH. YOU JUST LAUNCHED AL INTO ORBIT.";
-
-          message.textContent =
-            "Central Park has officially filed a complaint. 😂";
-
-          button.disabled = false;
-
-          button.textContent =
-            "🚀 RESET MAP";
-
-          rocket.classList.remove(
-            "launch"
-          );
-
-          page.classList.remove(
-            "shake"
-          );
-
-          route.style.width =
-            "0";
-
-          footprints.forEach(
-            function(foot) {
-
-              foot.classList.remove(
-                "show"
-              );
-
-            }
-          );
-
-          step = 0;
-
-        },
-        4800
-      );
-
-    }
-
-  }
-);
+});
 
 </script>
 
